@@ -1,0 +1,29 @@
+PODS:
+  - Flutter (1.0.0)
+  - GTSDK (2.3.0.0)
+  - sona (0.0.1):
+    - Flutter
+    - GTSDK
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - sona (from `.symlinks/plugins/sona/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - GTSDK
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  sona:
+    :path: ".symlinks/plugins/sona/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  GTSDK: 16f570807190eca9846653886a1f399cb0485061
+  sona: 394d2c73861688731eb18c7c4f21b1d19c142921
+
+PODFILE CHECKSUM: ff43a125c660fe8e1edaf17e3e7aa37bb5a2cc87
+
+COCOAPODS: 1.5.3
