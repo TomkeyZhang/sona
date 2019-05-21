@@ -215,7 +215,7 @@ const NSString *keyAlias = @"alias";
     NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSLog(@"\n>>>[DeviceToken Success]:%@\n\n", token);
-
+    [sonMethodChannel invokeMethod:@"onReceiveClientId" arguments:token];
     // [ GTSdk ]：向个推服务器注册deviceToken
     [GeTuiSdk registerDeviceToken:token];
 }
@@ -233,7 +233,7 @@ const NSString *keyAlias = @"alias";
     // [ GTSdk ]：将收到的APNs信息传给个推统计
     [GeTuiSdk handleRemoteNotification:userInfo];
 
-    [sonMethodChannel invokeMethod:@"onNotificationMessageClicked" arguments:userInfo];
+    [sonMethodChannel invokeMethod:@"onReceiveMessageData" arguments:userInfo];
     // 控制台打印接收APNs信息
     NSLog(@"\n>>>[Receive RemoteNotification]:%@\n\n", userInfo);
    

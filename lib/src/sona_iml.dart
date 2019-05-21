@@ -106,15 +106,16 @@ dispose() {
 }
 
 Future<dynamic> _handler(MethodCall methodCall) {
+//  print("onReceiveMessageData:$methodCall");
   if ("onReceiveMessageData" == methodCall.method) {
-    _receivedMessageDataController.add(methodCall.arguments);
+      _receivedMessageDataController.add(methodCall.arguments);
   } else if ("onReceiveClientId" == methodCall.method) {
     _receivedClientIDController.add(methodCall.arguments);
-  } else if ("onReceiveOnlineState" == methodCall.arguments) {
+  } else if ("onReceiveOnlineState" == methodCall.method) {
     _handleSdkStatus(methodCall);
   } else if ("onNotificationMessageClicked" == methodCall.method) {
     _handleOnNotificationMessageClicked(methodCall);
-  }else if("onNotificationMessageArrived" == methodCall.arguments){
+  }else if("onNotificationMessageArrived" == methodCall.method){
     _handleOnNotificationMessageArrived(methodCall);
   }
 
