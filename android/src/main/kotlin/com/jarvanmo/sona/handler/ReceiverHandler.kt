@@ -10,6 +10,14 @@ object ReceiverHandler {
 
     var methodChannel: MethodChannel? = null
 
+    private fun safeInvokeMethod(method: String, arguments: Any) {
+        try {
+            methodChannel?.invokeMethod(method, arguments)
+        } catch (t: Throwable) {
+            t.printStackTrace()
+        }
+    }
+
     fun handleReceivedMessageData(msg: GTTransmitMessage) {
 
         val result = hashMapOf(
@@ -24,25 +32,25 @@ object ReceiverHandler {
         if (payload != null) {
             result[PAYLOAD] = String(payload)
         }
-        methodChannel?.invokeMethod("onReceiveMessageData", result)
-
+//        methodChannel?.invokeMethod("onReceiveMessageData", result)
+        safeInvokeMethod("onReceiveMessageData", result)
     }
 
-
     fun onReceiveClientId(clientID: String) {
-        methodChannel?.invokeMethod("onReceiveClientId", clientID)
+//        methodChannel?.invokeMethod("onReceiveClientId", clientID)
+        safeInvokeMethod("onReceiveClientId", clientID)
     }
 
     fun onReceiveOnlineState(isOnline: Boolean) {
-        if (isOnline) {
-            methodChannel?.invokeMethod("onReceiveOnlineState", "STARTED")
-        } else {
-            methodChannel?.invokeMethod("onReceiveOnlineState","OFFLINE")
-        }
-
+//        if (isOnline) {
+//            methodChannel?.invokeMethod("onReceiveOnlineState", "STARTED")
+//        } else {
+//            methodChannel?.invokeMethod("onReceiveOnlineState", "OFFLINE")
+//        }
+        safeInvokeMethod("onReceiveOnlineState", if (isOnline) "STARTED" else "OFFLINE")
     }
 
-    fun onNotificationMessageArrived(msg: GTNotificationMessage){
+    fun onNotificationMessageArrived(msg: GTNotificationMessage) {
 
         val result = hashMapOf(
                 PLATFORM to ANDROID,
@@ -55,11 +63,11 @@ object ReceiverHandler {
                 TITLE to msg.title
         )
 
-        methodChannel?.invokeMethod("onNotificationMessageArrived",result)
-
+//        methodChannel?.invokeMethod("onNotificationMessageArrived", result)
+        safeInvokeMethod("onNotificationMessageArrived", result)
     }
 
-    fun onNotificationMessageClicked(msg: GTNotificationMessage){
+    fun onNotificationMessageClicked(msg: GTNotificationMessage) {
         val result = hashMapOf(
                 PLATFORM to ANDROID,
                 APP_ID to msg.appid,
@@ -71,6 +79,7 @@ object ReceiverHandler {
                 TITLE to msg.title
         )
 
-        methodChannel?.invokeMethod("onNotificationMessageClicked",result)
+//        methodChannel?.invokeMethod("onNotificationMessageClicked", result)
+        safeInvokeMethod("onNotificationMessageClicked", result)
     }
 }
