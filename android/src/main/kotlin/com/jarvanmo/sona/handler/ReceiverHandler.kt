@@ -1,6 +1,8 @@
 package com.jarvanmo.sona.handler
 
 
+import android.os.Handler
+import android.os.Looper
 import com.igexin.sdk.message.GTNotificationMessage
 import com.igexin.sdk.message.GTTransmitMessage
 import com.jarvanmo.sona.constants.*
@@ -9,10 +11,11 @@ import io.flutter.plugin.common.MethodChannel
 object ReceiverHandler {
 
     var methodChannel: MethodChannel? = null
+    var handler: Handler = Handler(Looper.getMainLooper())
 
     private fun safeInvokeMethod(method: String, arguments: Any) {
         try {
-            methodChannel?.invokeMethod(method, arguments)
+            handler.post{ methodChannel?.invokeMethod(method, arguments) }
         } catch (t: Throwable) {
             t.printStackTrace()
         }
