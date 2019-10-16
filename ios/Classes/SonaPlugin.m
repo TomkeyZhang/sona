@@ -212,12 +212,24 @@ const NSString *keyAlias = @"alias";
 
 /** 远程通知注册成功委托 */
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *token;
+    if (@available(iOS 13.0, *)) {
+        const unsigned *tokenBytes = [deviceToken bytes];
+        token = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",
+                              ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
+                              ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
+                              ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
+    } else {
+        token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+        token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    }
+
     NSLog(@"\n>>>[DeviceToken Success]:%@\n\n", token);
     [sonMethodChannel invokeMethod:@"onReceiveClientId" arguments:token];
+
     // [ GTSdk ]：向个推服务器注册deviceToken
-    [GeTuiSdk registerDeviceToken:token];
+    [GeTuiSdk registerDeviceTokenData:deviceToken];
+
 }
 
 /** 远程通知注册失败委托 */
